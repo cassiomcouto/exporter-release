@@ -2,21 +2,22 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
-	"gopkg.in/yaml.v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"gopkg.in/yaml.v2"
 )
 
 // Struct to represent server configuration and check interval
 type Config struct {
 	Server struct {
-		Port         int    `yaml:"port"`
-		MetricsPath  string `yaml:"metrics_path"`
+		Port          int    `yaml:"port"`
+		MetricsPath   string `yaml:"metrics_path"`
 		CheckInterval string `yaml:"check_interval"`
 	} `yaml:"server"`
 }
@@ -50,7 +51,7 @@ var (
 
 // Function to load server configuration from YAML file
 func loadConfig(filename string) (*Config, error) {
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, fmt.Errorf("error reading configuration file: %v", err)
 	}
@@ -66,7 +67,7 @@ func loadConfig(filename string) (*Config, error) {
 
 // Function to load repositories and charts from a YAML file
 func loadReposAndChartsFromYAML(filename string) (*ReposAndCharts, error) {
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, fmt.Errorf("error reading file: %v", err)
 	}
@@ -103,7 +104,7 @@ func getLatestHelmChartRelease(repoURL, chartName string) (string, string, error
 		return "", "", fmt.Errorf("error accessing Helm repository: status code %d", resp.StatusCode)
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", "", fmt.Errorf("error reading index.yaml content: %v", err)
 	}
