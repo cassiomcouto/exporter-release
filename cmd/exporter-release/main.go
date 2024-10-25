@@ -154,7 +154,7 @@ func checkReleases(reposAndCharts *ReposAndCharts) {
 
 func main() {
 	// Load server configuration from config.yaml
-	config, err := loadConfig("config.yaml")
+	config, err := loadConfig("config/config.yaml")
 	if err != nil {
 		log.Fatalf("Error loading configuration file: %v", err)
 	}
@@ -177,7 +177,7 @@ func main() {
 	}()
 
 	// Load the list of repositories and charts from the YAML file
-	reposAndCharts, err := loadReposAndChartsFromYAML("repos_and_charts.yaml")
+	reposAndCharts, err := loadReposAndChartsFromYAML("config/repos_and_charts.yaml")
 	if err != nil {
 		log.Fatalf("Error loading repos_and_charts.yaml file: %v", err)
 	}
