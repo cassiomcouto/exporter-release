@@ -20,9 +20,6 @@ FROM alpine:latest
 # Diretório de trabalho no container
 WORKDIR /root/
 
-# Copiar arquivos de configuração
-COPY config/ ./config/
-
 # Copiar o binário do build para a imagem final
 COPY --from=builder /app/exporter-release .
 
