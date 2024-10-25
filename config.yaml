@@ -1,0 +1,4 @@
+server:
+  port: 8080
+  metrics_path: "/metrics"
+  check_interval: 5m  # Pode usar valores como 5m, 10m, etc.
