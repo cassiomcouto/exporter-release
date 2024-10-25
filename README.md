@@ -65,7 +65,7 @@ repositories:
 
 ## Métricas Expostas
 
-O exporter expõe as seguintes métricas no endpoint configurado (por padrão, `localhost:8000/metrics`):
+O exporter expõe as seguintes métricas no endpoint configurado (por padrão, `localhost:8080/metrics`):
 
 - **`chart_release_version`**: Mostra a versão mais recente de um chart Helm e a data de disponibilização. Exemplo de métrica:
 
