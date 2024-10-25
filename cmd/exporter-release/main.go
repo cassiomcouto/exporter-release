@@ -153,8 +153,24 @@ func checkReleases(reposAndCharts *ReposAndCharts) {
 }
 
 func main() {
+
+	// Definir o diretório base de configuração, usando CONFIG_PATH ou um valor padrão
+	configDir := os.Getenv("CONFIG_PATH")
+	if configDir == "" {
+		if len(os.Args) > 1 {
+			configDir = os.Args[1]
+		} else {
+			configDir = "config"
+		}
+	}
+
+	// Caminhos completos para os arquivos de configuração
+	configPath := fmt.Sprintf("%s/config.yaml", configDir)
+	reposPath := fmt.Sprintf("%s/repos_and_charts.yaml", configDir)
+
+
 	// Load server configuration from config.yaml
-	config, err := loadConfig("config.yaml")
+	config, err := loadConfig(configPath)
 	if err != nil {
 		log.Fatalf("Error loading configuration file: %v", err)
 	}
@@ -177,7 +193,7 @@ func main() {
 	}()
 
 	// Load the list of repositories and charts from the YAML file
-	reposAndCharts, err := loadReposAndChartsFromYAML("repos_and_charts.yaml")
+	reposAndCharts, err := loadReposAndChartsFromYAML(reposPath)
 	if err != nil {
 		log.Fatalf("Error loading repos_and_charts.yaml file: %v", err)
 	}
