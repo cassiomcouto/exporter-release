@@ -41,7 +41,7 @@ Exemplo de `config.yaml`:
 
 ```yaml
 server:
-  port: 8000
+  port: 8080
   metrics_path: "/metrics"
   check_interval: "5m"  # Intervalo de verificação em minutos
 ```
@@ -62,3 +62,14 @@ repositories:
     charts:
       - prometheus
 ```
+
+## Métricas Expostas
+
+O exporter expõe as seguintes métricas no endpoint configurado (por padrão, `localhost:8080/metrics`):
+
+- **`chart_release_version`**: Mostra a versão mais recente de um chart Helm e a data de disponibilização. Exemplo de métrica:
+
+  ```plaintext
+  chart_release_version{repo="https://grafana.github.io/helm-charts", chart="grafana", version="6.1.3", release_date="19-10-2024"} 1
+  chart_release_version{repo="https://grafana.github.io/helm-charts", chart="loki", version="2.3.0", release_date="15-09-2024"} 1
+  ```
