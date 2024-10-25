@@ -21,7 +21,7 @@ FROM alpine:latest
 WORKDIR /root/
 
 # Copiar arquivos de configuração
-COPY config/config.yaml config/repos_and_charts.yaml ./config/
+COPY config/ ./config/
 
 # Copiar o binário do build para a imagem final
 COPY --from=builder /app/exporter-release .
