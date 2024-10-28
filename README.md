@@ -62,6 +62,13 @@ repositories:
     charts:
       - prometheus
 ```
+### Variáveis de Ambiente
+
+Além das configurações em config.yaml, o exporter-release suporta variáveis de ambiente para configuração dinâmica:
+
+	•	METRICS_PATH: Define o caminho das métricas (prioritário sobre config.yaml).
+	•	METRICS_PORT: Define a porta de exposição das métricas (prioritário sobre config.yaml).
+	•	CONFIG_PATH: Define o diretório de configuração, onde estão config.yaml e repos_and_charts.yaml.
 
 ## Métricas Expostas
 
