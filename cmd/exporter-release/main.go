@@ -153,8 +153,7 @@ func checkReleases(reposAndCharts *ReposAndCharts) {
 }
 
 func main() {
-
-	// Definir o diretório base de configuração, usando CONFIG_PATH ou um valor padrão
+	// Define the base configuration directory, using CONFIG_PATH or a default value
 	configDir := os.Getenv("CONFIG_PATH")
 	if configDir == "" {
 		if len(os.Args) > 1 {
@@ -164,15 +163,25 @@ func main() {
 		}
 	}
 
-	// Caminhos completos para os arquivos de configuração
+	// Full paths for configuration files
 	configPath := fmt.Sprintf("%s/config.yaml", configDir)
 	reposPath := fmt.Sprintf("%s/repos_and_charts.yaml", configDir)
-
 
 	// Load server configuration from config.yaml
 	config, err := loadConfig(configPath)
 	if err != nil {
 		log.Fatalf("Error loading configuration file: %v", err)
+	}
+
+	// Get Metrics Path and Port settings, prioritizing environment variables
+	metricsPath := os.Getenv("METRICS_PATH")
+	if metricsPath == "" {
+		metricsPath = config.Server.MetricsPath
+	}
+
+	metricsPort := os.Getenv("METRICS_PORT")
+	if metricsPort == "" {
+		metricsPort = fmt.Sprintf("%d", config.Server.Port)
 	}
 
 	// Parse the check interval duration
@@ -185,10 +194,10 @@ func main() {
 	prometheus.MustRegister(releaseVersionMetric)
 
 	// Start the HTTP server with port and metrics path defined in the configuration file
-	http.Handle(config.Server.MetricsPath, promhttp.Handler())
+	http.Handle(metricsPath, promhttp.Handler())
 	go func() {
-		address := fmt.Sprintf(":%d", config.Server.Port)
-		log.Printf("Metrics server started on port %d with path %s", config.Server.Port, config.Server.MetricsPath)
+		address := fmt.Sprintf(":%s", metricsPort)
+		log.Printf("Metrics server started on port %s with path %s", metricsPort, metricsPath)
 		log.Fatal(http.ListenAndServe(address, nil))
 	}()
 
