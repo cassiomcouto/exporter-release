@@ -39,7 +39,7 @@ jobs:
           version: latest
           args: release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
   push_to_registries:
     name: Push Docker image to GitHub Packages
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GIT_TOKEN }}
       
       - name: Extract metadata (tags, labels) for Docker
         id: meta
