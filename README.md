@@ -68,6 +68,7 @@ Além das configurações em config.yaml, o exporter-release suporta variáveis 
 
 	•	METRICS_PATH: Define o caminho das métricas (prioritário sobre config.yaml).
 	•	METRICS_PORT: Define a porta de exposição das métricas (prioritário sobre config.yaml).
+  •	CHECK_INTERVAL: Define o intervalo de verificação das atualizações de versão dos charts. Substitui o valor de check_interval em config.yaml e deve ser especificado em um formato aceito por time.ParseDuration (ex., "5m" para cinco minutos).
 	•	CONFIG_PATH: Define o diretório de configuração, onde estão config.yaml e repos_and_charts.yaml.
 
 ## Métricas Expostas
