@@ -184,8 +184,13 @@ func main() {
 		metricsPort = fmt.Sprintf("%d", config.Server.Port)
 	}
 
-	// Parse the check interval duration
-	checkInterval, err := time.ParseDuration(config.Server.CheckInterval)
+	// Parse the check interval duration, prioritizing the CHECK_INTERVAL environment variable
+	checkIntervalStr := os.Getenv("CHECK_INTERVAL")
+	if checkIntervalStr == "" {
+		checkIntervalStr = config.Server.CheckInterval
+	}
+
+	checkInterval, err := time.ParseDuration(checkIntervalStr)
 	if err != nil {
 		log.Fatalf("Error processing check interval: %v", err)
 	}
@@ -197,7 +202,7 @@ func main() {
 	http.Handle(metricsPath, promhttp.Handler())
 	go func() {
 		address := fmt.Sprintf(":%s", metricsPort)
-		log.Printf("Metrics server started on port %s with path %s", metricsPort, metricsPath)
+		log.Printf("Metrics server started on port %s with path %s and check interval %s", metricsPort, metricsPath, checkInterval)
 		log.Fatal(http.ListenAndServe(address, nil))
 	}()
 
@@ -210,6 +215,6 @@ func main() {
 	// Periodically check releases and update metrics
 	for {
 		checkReleases(reposAndCharts)
-		time.Sleep(checkInterval) // Use the check interval from the config.yaml file
+		time.Sleep(checkInterval) // Use the check interval from the configuration or environment variable
 	}
 }
