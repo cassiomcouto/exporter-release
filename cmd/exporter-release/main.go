@@ -87,14 +87,18 @@ func formatReleaseDate(created string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("error parsing date: %v", err)
 	}
-
-	// Format the date to DD-MM-YYYY
 	return parsedTime.Format("02-01-2006"), nil
 }
 
 // Function to get the latest release version and formatted release date of a Helm chart
 func getLatestHelmChartRelease(repoURL, chartName string) (string, string, error) {
-	resp, err := http.Get(repoURL + "/index.yaml")
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", repoURL+"/index.yaml", nil)
+	if err != nil {
+		return "", "", fmt.Errorf("error creating request: %v", err)
+	}
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return "", "", fmt.Errorf("error accessing Helm repository: %v", err)
 	}
@@ -214,6 +218,7 @@ func main() {
 
 	// Periodically check releases and update metrics
 	for {
+		log.Println("Starting release check...") // Log statement added
 		checkReleases(reposAndCharts)
 		time.Sleep(checkInterval) // Use the check interval from the configuration or environment variable
 	}
