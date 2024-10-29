@@ -86,6 +86,7 @@ func formatReleaseDate(created string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("error parsing date: %v", err)
 	}
+	// Format the date to DD-MM-YYYY
 	return parsedTime.Format("02-01-2006"), nil
 }
 
