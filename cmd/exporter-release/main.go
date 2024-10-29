@@ -87,6 +87,7 @@ func formatReleaseDate(created string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("error parsing date: %v", err)
 	}
+	// Format the date to DD-MM-YYYY
 	return parsedTime.Format("02-01-2006"), nil
 }
 
@@ -218,7 +219,7 @@ func main() {
 
 	// Periodically check releases and update metrics
 	for {
-		log.Println("Starting release check...") // Log statement added
+		log.Println("Starting release check ...") // Log statement added
 		checkReleases(reposAndCharts)
 		time.Sleep(checkInterval) // Use the check interval from the configuration or environment variable
 	}
